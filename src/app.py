@@ -1,8 +1,8 @@
-import os
 from flask import Flask
 from src.routes.messages import messages_bp
 from src.routes.plans import plans_bp  # Import the plans blueprint
 from src.services.database import init_mongo
+from waitress import serve  # Import Waitress
 
 def create_app():
     app = Flask(__name__)
@@ -18,5 +18,5 @@ def create_app():
 
 if __name__ == '__main__':
     app = create_app()
-    port = int(os.environ.get('PORT', 5000))
-    app.run(debug=True, port=5000)
+    # Use Waitress to serve the app
+    serve(app, host='0.0.0.0', port=5000)
