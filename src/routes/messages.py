@@ -1,11 +1,11 @@
 from flask import Blueprint, request, jsonify
 from src.services.database import messages_collection
-from src.models.message import create_message as create_message_model
+from src.models.message import create_message as create_message_document  # Rename import
 
 messages_bp = Blueprint('messages', __name__)
 
 @messages_bp.route('/messages', methods=['POST'])
-def add_message():  # Renommé de create_message à add_message
+def create_message():
     data = request.get_json()
 
     # Validate required fields
@@ -15,7 +15,7 @@ def add_message():  # Renommé de create_message à add_message
             return jsonify({"error": f"Missing or empty field: {field}"}), 400
 
     # Create the message document
-    message = create_message_model(data)  # Utilise la fonction importée renommée
+    message = create_message_document(data)  # Use the renamed function
 
     # Insert the message
     message_id = messages_collection.insert_one(message).inserted_id
