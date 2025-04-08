@@ -3,3 +3,4 @@ dnspython==2.6.1
 python-dotenv==1.0.0
 flask==2.3.3
 gunicorn
+waitress
