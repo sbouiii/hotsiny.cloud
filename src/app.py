@@ -1,18 +1,22 @@
 from flask import Flask
+from src.services.mail import mail  # Importer mail depuis le nouveau module
 from src.routes.messages import messages_bp
-from src.routes.plans import plans_bp  # Import the plans blueprint
+from src.routes.plans import plans_bp
 from src.services.database import init_mongo
-from waitress import serve  # Import Waitress
 
 def create_app():
     app = Flask(__name__)
+    app.config.from_object('src.config.Config')
+
+    # Initialize Flask-Mail
+    mail.init_app(app)
 
     # Initialize MongoDB
     init_mongo(app)
 
     # Register blueprints (routes)
     app.register_blueprint(messages_bp, url_prefix='/api')
-    app.register_blueprint(plans_bp, url_prefix='/api')  # Register plans blueprint
+    app.register_blueprint(plans_bp, url_prefix='/api')
 
     return app
 
