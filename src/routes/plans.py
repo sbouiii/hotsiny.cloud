@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from src.services.database import db
 from src.models.plan import create_plan
+from bson import ObjectId
 
 plans_collection = db['plans']
 plans_bp = Blueprint('plans', __name__)
@@ -24,5 +25,8 @@ def create_plan_route():
 
 @plans_bp.route('/plans', methods=['GET'])
 def get_plans():
-    plans = list(plans_collection.find({}, {'_id': 0}))
+    plans = list(plans_collection.find({}))
+    # Convertir l'_id en chaîne pour chaque plan
+    for plan in plans:
+        plan['_id'] = str(plan['_id'])
     return jsonify(plans)
